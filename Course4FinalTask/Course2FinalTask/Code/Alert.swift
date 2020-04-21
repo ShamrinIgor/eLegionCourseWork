@@ -3,7 +3,7 @@ import UIKit
 
 class Alert {
     
-    //Создает алерт
+    //Создает алерт ахаха лол 
     class func showBasic(title: String, message: String, vc: UIViewController) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
