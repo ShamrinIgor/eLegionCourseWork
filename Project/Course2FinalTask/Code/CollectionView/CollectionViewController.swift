@@ -22,7 +22,17 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
     let reuseIdentefier = "kekCell"
     let reuseHeaderIdent = "kekHeader"
     
+    var refreshControll: UIRefreshControl = {
+         let rfControll = UIRefreshControl()
+         rfControll.addTarget(self, action: #selector(refresh(sender:)),for: .valueChanged)
+         return rfControll
+     }()
     
+    @objc private func refresh(sender: UIRefreshControl) {
+           getPostsForCollectionView()
+           myCollectionView.reloadData()
+           sender.endRefreshing()
+       }
     
     var currentUserPhotosURLs: [URL] {
         get {
@@ -80,6 +90,8 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         myCollectionView.register(UINib(nibName: String(describing: HeaderCollectionView.self), bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: reuseHeaderIdent)
         
         getPostsForCollectionView()
+        
+        myCollectionView.refreshControl = refreshControll
         
         myCollectionView.delegate = self
         myCollectionView.dataSource = self

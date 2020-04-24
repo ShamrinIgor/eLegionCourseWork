@@ -7,7 +7,6 @@
 //
 
 import UIKit
-//import DataProvider
 
 
 class OtherUserProfileControllerViewController: CollectionViewController {
@@ -15,7 +14,6 @@ class OtherUserProfileControllerViewController: CollectionViewController {
     var user: User?
     var userID: Int?
     var userPosts: Posts?
-//    var token: String?
     
     override func viewDidLoad() {
         myCollectionView.register(UINib(nibName: String(describing: CollectionViewCell.self), bundle: nil),  forCellWithReuseIdentifier: "kekCell")
@@ -54,6 +52,7 @@ class OtherUserProfileControllerViewController: CollectionViewController {
                 switch result {
                 case .success(let posts):
                     self.userPosts = posts
+                    self.userPosts!.posts = self.userPosts!.posts.reversed()
                 case .fail(let error):
                     print(error)
                 case .badResponse(let res):
