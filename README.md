@@ -6,3 +6,6 @@ Installation:
 - `pod install`
 
 Run the "Run" file in the Server folder  
+
+# Demo
+![alt-text](https://github.com/niceiceeyes1337/eLegionCourseWork/blob/master/IMG-1212.gif)
