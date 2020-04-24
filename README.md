@@ -5,4 +5,4 @@ Installation:
 - Go to Project
 - `pod install`
 
-Run the "Run" file in Server folder  
+Run the "Run" file in the Server folder  
