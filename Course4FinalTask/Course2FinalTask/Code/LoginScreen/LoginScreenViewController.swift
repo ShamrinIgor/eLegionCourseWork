@@ -10,6 +10,8 @@ class LoginScreenViewController: UIViewController, UITextFieldDelegate
     
     var loginTextFieldIsEmpty = true
     var passwordTextFieldIsEmpty = true
+    
+    var service = "eLegionCourseProject"
             
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,12 +28,18 @@ class LoginScreenViewController: UIViewController, UITextFieldDelegate
         loginTextField.delegate = self
         passwordTextField.delegate = self
         
-        signInButton.isEnabled = false
-        signInButton.alpha = 0.3
-        
+        keychainAuthorization()
     }
     
-    func viewConfiger() {
+    private func keychainAuthorization() {
+        let passwordItems = readAllItems(service: service)
+        if let passItems = passwordItems, !passItems.isEmpty {
+            let keys = Array<String>(passItems.keys)
+            authenticateUser(account: keys[0], password: passItems[keys[0]]!)
+        }
+    }
+    
+    private func viewConfiger() {
         loginTextField.translatesAutoresizingMaskIntoConstraints = false
         loginTextField.placeholder = "Login"
         loginTextField.textColor = .black
@@ -50,6 +58,8 @@ class LoginScreenViewController: UIViewController, UITextFieldDelegate
         signInButton.setTitle("Sign in", for: .normal)
         signInButton.backgroundColor = .systemBlue
         signInButton.layer.cornerRadius = 10.0
+        signInButton.isEnabled = false
+        signInButton.alpha = 0.3
     }
     
     override func updateViewConstraints() {
@@ -99,8 +109,8 @@ class LoginScreenViewController: UIViewController, UITextFieldDelegate
         return true
     }
     
-    @objc func signInButtonPressed(sender: UIButton!) {
-        if let login = loginTextField.text, let password = passwordTextField.text {
+    func logInIntoAccount(account: String?, password: String?) {
+        if let login = account, let password = password {
             if !login.isEmpty && !password.isEmpty {
                 let group = DispatchGroup()
                 group.enter()
@@ -121,6 +131,14 @@ class LoginScreenViewController: UIViewController, UITextFieldDelegate
                             DispatchQueue.main.async {
                                 self.performSegue(withIdentifier: "toNavigationBar", sender: nil)
                             }
+                            
+                            let result = self.savePassword(password: password, service: self.service, account: account)
+                            
+                            if result, let savedPassword = self.readPassword(service: self.service, account: account) {
+                                print("password:\(savedPassword) saved successfully with service name:\(self.service) and account:\(account)")
+                            } else {
+                                print("can't save password")
+                            }
                         }
                     case .fail(let error):
                         print(error)
@@ -132,6 +150,11 @@ class LoginScreenViewController: UIViewController, UITextFieldDelegate
                 group.wait()
             }
         }
+    }
+    
+    @objc func signInButtonPressed(sender: UIButton!) {
+//        if let login = loginTextField.text, let password = passwordTextField.text {
+        logInIntoAccount(account: loginTextField.text, password: passwordTextField.text)
     }
     
 }
