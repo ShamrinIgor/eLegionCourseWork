@@ -17,52 +17,66 @@ class FeedTableViewController:  UIViewController, UITableViewDataSource, UITable
     @IBOutlet weak var navigationBar: UINavigationItem!
     
     let spinner = UIActivityIndicatorView()
-        
+    var refreshControll: UIRefreshControl = {
+        let rfControll = UIRefreshControl()
+        rfControll.addTarget(self, action: #selector(refresh(sender:)),for: .valueChanged)
+        return rfControll
+    }()
+    
     var selectedIndex = 0
     
-//    var posts: Posts?
+    @objc private func refresh(sender: UIRefreshControl) {
+        getPostsInTableViewController()
+        tableView.reloadData()
+        sender.endRefreshing()
+    }
     
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            
-            tableView.register(FeedViewCell.self, forCellReuseIdentifier: "kekCellid")
-            
-            tableView.separatorStyle = .none
-            
-            tableView.delegate = self
-            tableView.dataSource = self
-            
-            let group = DispatchGroup()
-            
-            DispatchQueue.global().async(group: group) {
-                group.enter()
-                getPostsForFeed(token: token) {
-                    result in
-                    switch result {
-                        case .success(let arrayOfPosts):
-                            posts = arrayOfPosts
-                        case .fail(let error):
-                            print(error)
-                        case .badResponse(let res):
-                            print(res)
-                    }
-                    group.leave()
+    func getPostsInTableViewController() {
+        let group = DispatchGroup()
+        DispatchQueue.global().async(group: group) {
+            group.enter()
+            getPostsForFeed(token: token) {
+                result in
+                switch result {
+                case .success(let arrayOfPosts):
+                    posts = arrayOfPosts
+                case .fail(let error):
+                    print(error)
+                case .badResponse(let res):
+                    print(res)
                 }
+                group.leave()
             }
-            group.wait()
-            
-            view.bringSubviewToFront(loadingSpinner)
-            loadingSpinner.style = .whiteLarge
-            loadingSpinner.backgroundColor = (UIColor (white: 0.3, alpha: 0.8))
-            loadingSpinner.layer.cornerRadius = 10
-            loadingSpinner.frame = CGRect(x: 0.0, y: 0.0, width: 60, height: 60)
-            loadingSpinner.center = (self.navigationController?.view.center)!
-            loadingSpinner.isHidden = true
-            
-            navigationBar.title = "Feed"
-            tableView.estimatedRowHeight = 300
-            tableView.reloadData()
-            tableView.setNeedsLayout()
+        }
+        group.wait()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        tableView.register(FeedViewCell.self, forCellReuseIdentifier: "kekCellid")
+        
+        tableView.separatorStyle = .none
+        tableView.refreshControl = refreshControll
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        
+        getPostsInTableViewController()
+        
+        view.bringSubviewToFront(loadingSpinner)
+        loadingSpinner.style = .whiteLarge
+        loadingSpinner.backgroundColor = (UIColor (white: 0.3, alpha: 0.8))
+        loadingSpinner.layer.cornerRadius = 10
+        loadingSpinner.frame = CGRect(x: 0.0, y: 0.0, width: 60, height: 60)
+        loadingSpinner.center = (self.navigationController?.view.center)!
+        loadingSpinner.isHidden = true
+        
+        navigationBar.title = "Feed"
+        tableView.estimatedRowHeight = 300
+        tableView.reloadData()
+        tableView.setNeedsLayout()
     }
     
     
@@ -90,11 +104,11 @@ class FeedTableViewController:  UIViewController, UITableViewDataSource, UITable
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
-//
+    //
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
-//
+    //
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("You selected cell #\(indexPath.row)!")
         selectedIndex = indexPath.row
@@ -103,9 +117,9 @@ class FeedTableViewController:  UIViewController, UITableViewDataSource, UITable
     func startLoading() {
         loadingSpinner.startAnimating()
     }
-
+    
     @IBAction func LikesCoutnerPressed(_ sender: Any) {
-
+        
         let group = DispatchGroup()
         group.enter()
         DispatchQueue.main.async {
@@ -113,7 +127,7 @@ class FeedTableViewController:  UIViewController, UITableViewDataSource, UITable
             self.loadingSpinner.startAnimating()
             group.leave()
         }
-              
+        
         group.notify(queue: DispatchQueue.main) {
             self.performSegue(withIdentifier: "likesPressed", sender: nil)
         }
@@ -147,7 +161,7 @@ class FeedTableViewController:  UIViewController, UITableViewDataSource, UITable
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? likeTableViewController {
-//
+            //
             let passedPostID = posts!.posts[selectedIndex].id!
             destination.postID = passedPostID
             loadingSpinner.isHidden = true
@@ -156,10 +170,10 @@ class FeedTableViewController:  UIViewController, UITableViewDataSource, UITable
             let passedUserID = posts!.posts[selectedIndex].authorId
             destination.userID = passedUserID
             loadingSpinner.isHidden = true
-
+            
         }
     }
     
-
-     
+    
+    
 }
