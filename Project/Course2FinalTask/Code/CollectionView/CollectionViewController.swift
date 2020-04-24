@@ -7,7 +7,6 @@
 //
 
 import UIKit
-//import DataProvider
 import Kingfisher
 
 class CollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
@@ -24,6 +23,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
     let reuseHeaderIdent = "kekHeader"
     
     
+    
     var currentUserPhotosURLs: [URL] {
         get {
             var URLs: [URL] = []
@@ -36,27 +36,19 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        myCollectionView.register(UINib(nibName: String(describing: CollectionViewCell.self), bundle: nil),  forCellWithReuseIdentifier: "kekCell")
-        myCollectionView.register(UINib(nibName: String(describing: HeaderCollectionView.self), bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: reuseHeaderIdent)
-                
-        myCollectionView.delegate = self
-        myCollectionView.dataSource = self
-        super.view.addSubview(myCollectionView)
-        
+    func getPostsForCollectionView() {
         let group = DispatchGroup()
         DispatchQueue.global().async(group: group) {
             group.enter()
             getUserMe(token: token) {
                 result in
                 switch result {
-                    case .success(let user):
-                        self.currentUser = user
-                    case .fail(let error):
-                        print(error)
-                    case .badResponse(let res):
-                        print(res)
+                case .success(let user):
+                    self.currentUser = user
+                case .fail(let error):
+                    print(error)
+                case .badResponse(let res):
+                    print(res)
                 }
                 group.leave()
             }
@@ -68,26 +60,52 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
             getPosts(ofUserWithId: self.currentUser!.id!, token: token) {
                 result in
                 switch result {
-                    case .success(let posts):
-                        self.currentUserPosts = posts
-                    case .fail(let error):
-                        print(error)
-                    case .badResponse(let res):
-                        print(res)
+                case .success(let posts):
+                    self.currentUserPosts = posts
+                    self.currentUserPosts!.posts = self.currentUserPosts!.posts.reversed()
+                case .fail(let error):
+                    print(error)
+                case .badResponse(let res):
+                    print(res)
                 }
                 group.leave()
             }
         }
         group.wait()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        myCollectionView.register(UINib(nibName: String(describing: CollectionViewCell.self), bundle: nil),  forCellWithReuseIdentifier: "kekCell")
+        myCollectionView.register(UINib(nibName: String(describing: HeaderCollectionView.self), bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: reuseHeaderIdent)
+        
+        getPostsForCollectionView()
+        
+        myCollectionView.delegate = self
+        myCollectionView.dataSource = self
+        super.view.addSubview(myCollectionView)
+        
         
         navigationBar.title = currentUser!.fullName
         navigationBar.rightBarButtonItem = UIBarButtonItem(title: "Log Out", style: .plain, target: self, action: #selector(logOutButtonPressed))
     }
     
     @objc func logOutButtonPressed(sender: Any) {
-        print("neRofl")
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        appDelegate.switchViewControllers()
+        guard let window = UIApplication.shared.keyWindow else {
+            return
+        }
+
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "LoginScreenViewController")
+        
+        window.rootViewController = vc
+
+        var options: UIView.AnimationOptions = .transitionFlipFromTop
+        options.insert(.curveEaseOut)
+        
+        let duration: TimeInterval = 0.5
+
+        UIView.transition(with: window, duration: duration, options: options, animations: {}, completion: nil)
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -106,7 +124,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         cell.setImage(currentUserPhotosURLs[indexPath.item])
         return cell
     }
-
+    
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

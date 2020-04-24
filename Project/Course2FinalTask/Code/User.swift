@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 //import DataProvider
-struct User {
+public struct User {
     /// Идентификатор пользователя
     public var id: Int?
 

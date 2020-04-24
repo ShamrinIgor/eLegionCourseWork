@@ -183,18 +183,18 @@ func getPosts(ofUserWithId id: Int, token: String, completionHandler: @escaping 
             completionHandler(.fail(error!))
             return
         }
-               
+        
         guard let responceData = data else {
             let error = BackendError.objectSerialization(reason: "No data in responce")
             completionHandler(.fail(error)!)
             return
         }
         print(String(data: responceData, encoding: .utf8)!)
-               
+        
         do {
             if let json = try JSONSerialization.jsonObject(with: responceData, options: []) as? [Dictionary<String, Any>],
-            let posts = Posts(json: json) {
-               print(json)
+                let posts = Posts(json: json) {
+                print(json)
                 completionHandler(.success(posts))
             } else {
                 let error = BackendError.objectSerialization(reason: "Can't create object from JSON")
