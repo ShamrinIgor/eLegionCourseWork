@@ -26,6 +26,7 @@ class FeedTableViewController:  UIViewController, UITableViewDataSource, UITable
         return rfControll
     }()
     
+    var savedPostsMap = [Int:Bool]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,18 +69,22 @@ class FeedTableViewController:  UIViewController, UITableViewDataSource, UITable
                     
                     let context = dataManager.getConetxt()
                     for post in arrayOfPosts.posts {
-                        let postForCoreData = dataManager.createObject(from: PostModel.self)
-                        postForCoreData.authorAvatar = post.authorAvatar?.absoluteString
-                        postForCoreData.authorId = Int64(post.authorId!)
-                        postForCoreData.authorUsername = post.authorUsername
-                        postForCoreData.createdTime = post.createdTime!
-                        postForCoreData.currentUserLikesThisPost = post.currentUserLikesThisPost ?? false
-                        postForCoreData.descriptionOfPost = post.description
-                        postForCoreData.image = post.image?.absoluteString
-                        postForCoreData.id = Int64(post.id!)
-                        postForCoreData.likedByCount = Int64(post.likedByCount!)
-                        
-                        dataManager.save(context: context)
+                        if self.savedPostsMap[post.id!] == nil {
+                            self.savedPostsMap[post.id!] = true
+                            
+                            let postForCoreData = dataManager.createObject(from: PostModel.self)
+                            postForCoreData.authorAvatar = post.authorAvatar?.absoluteString
+                            postForCoreData.authorId = Int64(post.authorId!)
+                            postForCoreData.authorUsername = post.authorUsername
+                            postForCoreData.createdTime = post.createdTime!
+                            postForCoreData.currentUserLikesThisPost = post.currentUserLikesThisPost ?? false
+                            postForCoreData.descriptionOfPost = post.description
+                            postForCoreData.image = post.image?.absoluteString
+                            postForCoreData.id = Int64(post.id!)
+                            postForCoreData.likedByCount = Int64(post.likedByCount!)
+                            
+                            dataManager.save(context: context)
+                        }
                     }
                 case .fail(let error):
                     print(error)
