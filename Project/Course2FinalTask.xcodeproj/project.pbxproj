@@ -19,6 +19,9 @@
 		78481024232E321D002DBA52 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78481023232E321D002DBA52 /* Main.storyboard */; };
 		78481026232E32B2002DBA52 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78481025232E32B2002DBA52 /* FeedViewController.swift */; };
 		7848102A232E363D002DBA52 /* FeedViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78481029232E363D002DBA52 /* FeedViewCell.swift */; };
+		785D365E2454290000840581 /* AlertForOfflineMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785D365D2454290000840581 /* AlertForOfflineMode.swift */; };
+		785D3665245481A400840581 /* PostsDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 785D3663245481A400840581 /* PostsDataModel.xcdatamodeld */; };
+		785D36672454848E00840581 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785D36662454848E00840581 /* CoreDataManager.swift */; };
 		7865A8C1237C92ED009D9FE5 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7865A8C0237C92ED009D9FE5 /* FilterViewController.swift */; };
 		7865A8C3237D4867009D9FE5 /* FilterViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7865A8C2237D4867009D9FE5 /* FilterViewCell.swift */; };
 		7865A8C5237EB319009D9FE5 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7865A8C4237EB318009D9FE5 /* ShareViewController.swift */; };
@@ -54,6 +57,9 @@
 		78481023232E321D002DBA52 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		78481025232E32B2002DBA52 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		78481029232E363D002DBA52 /* FeedViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewCell.swift; sourceTree = "<group>"; };
+		785D365D2454290000840581 /* AlertForOfflineMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertForOfflineMode.swift; sourceTree = "<group>"; };
+		785D3664245481A400840581 /* PostsDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PostsDataModel.xcdatamodel; sourceTree = "<group>"; };
+		785D36662454848E00840581 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		7865A8C0237C92ED009D9FE5 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		7865A8C2237D4867009D9FE5 /* FilterViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewCell.swift; sourceTree = "<group>"; };
 		7865A8C4237EB318009D9FE5 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
@@ -127,6 +133,9 @@
 				78481023232E321D002DBA52 /* Main.storyboard */,
 				74B79257202B3254006BCB41 /* AppDelegate.swift */,
 				7870E4702379496000E64F7F /* Alert.swift */,
+				785D365D2454290000840581 /* AlertForOfflineMode.swift */,
+				785D36662454848E00840581 /* CoreDataManager.swift */,
+				785D3663245481A400840581 /* PostsDataModel.xcdatamodeld */,
 				788B4E69244F69E900297DA4 /* FeedView */,
 				788B4E68244F698B00297DA4 /* CollectionView */,
 				788B4E6A244F6A0B00297DA4 /* LikeTableView */,
@@ -343,10 +352,12 @@
 				78FDBAA1233CC5470028BFBF /* likeTableViewCell.swift in Sources */,
 				7828D18723D03AF70072C2C3 /* Post.swift in Sources */,
 				7870E473237AE5C900E64F7F /* NewpostViewController.swift in Sources */,
+				785D36672454848E00840581 /* CoreDataManager.swift in Sources */,
 				7828D18323CCFBA30072C2C3 /* Account.swift in Sources */,
 				74B79258202B3254006BCB41 /* AppDelegate.swift in Sources */,
 				78FDBAA3233CC6730028BFBF /* likeTableViewController.swift in Sources */,
 				7865A8C1237C92ED009D9FE5 /* FilterViewController.swift in Sources */,
+				785D3665245481A400840581 /* PostsDataModel.xcdatamodeld in Sources */,
 				7813F51B23CCB89A005E6091 /* LoginScreenViewController.swift in Sources */,
 				78FDBA99233A07860028BFBF /* CollectionViewCell.swift in Sources */,
 				78FDBAA5233E9C9C0028BFBF /* OtherUserProfileControllerViewController.swift in Sources */,
@@ -354,6 +365,7 @@
 				788F72E024505448006FE115 /* Authentication.swift in Sources */,
 				7848102A232E363D002DBA52 /* FeedViewCell.swift in Sources */,
 				7813F51F23D37791005E6091 /* enums.swift in Sources */,
+				785D365E2454290000840581 /* AlertForOfflineMode.swift in Sources */,
 				7813F51D23D0E750005E6091 /* User.swift in Sources */,
 				7865A8C3237D4867009D9FE5 /* FilterViewCell.swift in Sources */,
 				7870E4712379496000E64F7F /* Alert.swift in Sources */,
@@ -545,6 +557,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		785D3663245481A400840581 /* PostsDataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				785D3664245481A400840581 /* PostsDataModel.xcdatamodel */,
+			);
+			currentVersion = 785D3664245481A400840581 /* PostsDataModel.xcdatamodel */;
+			path = PostsDataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 74B7924C202B3254006BCB41 /* Project object */;
 }
