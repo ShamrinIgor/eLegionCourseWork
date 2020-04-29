@@ -42,4 +42,14 @@ class HeaderCollectionView: UICollectionReusableView {
         FollowButton.layer.cornerRadius = 7
     }
     
+    func setEmptyHeader()  {
+        userNameLabel.text = "username"
+        userNameLabel.textColor = .black
+        
+        followersLabel.text = "Followers: 0"
+        
+        followingLabel.text = "Following: 0"
+        
+        FollowButton.layer.cornerRadius = 7
+    }
 }

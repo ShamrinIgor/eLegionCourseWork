@@ -84,6 +84,10 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
             group.wait()
         }
         
+        guard let _ = self.currentUser?.id else {
+            return
+        }
+        
         DispatchQueue.global().async(group: group) {
             group.enter()
             getPosts(ofUserWithId: self.currentUser!.id!, token: token) {
@@ -142,7 +146,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         }
         
         
-        navigationBar.title = currentUser!.fullName
+        navigationBar.title = currentUser?.fullName ?? "Offline mode"
         navigationBar.rightBarButtonItem = UIBarButtonItem(title: "Log Out", style: .plain, target: self, action: #selector(logOutButtonPressed))
     }
     
@@ -211,9 +215,15 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
                         at indexPath: IndexPath) -> UICollectionReusableView {
         
         let view = myCollectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: reuseHeaderIdent, for: indexPath) as! HeaderCollectionView
-        view.setHeader(currentUser!)
+        
         view.frame.size.height = 86
-        view.FollowButton.isHidden = true
+               view.FollowButton.isHidden = true
+        guard let currentUser = self.currentUser else {
+            view.setEmptyHeader()
+            return view
+        }
+        view.setHeader(currentUser)
+       
         return view
     }
     
