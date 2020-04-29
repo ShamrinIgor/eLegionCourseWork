@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 //import DataProvider
-public struct User {
+class User {
     /// Идентификатор пользователя
     public var id: Int?
 
@@ -75,6 +75,25 @@ public struct User {
             return
         }
         self.followedByCount = followedByCount
+    }
+    
+    init?(userModel: UserModel) {
+
+        self.id = Int(userModel.id)
+        
+        self.username = userModel.username
+        
+        self.fullName = userModel.fullName
+        
+        self.avatar = URL(string: userModel.avatarURL!)
+        
+        self.currentUserFollowsThisUser = userModel.currentUserFollowsThisUser
+        
+        self.currentUserIsFollowedByThisUser = userModel.currentUserIsFollowedByThisUser
+        
+        self.followsCount = Int(userModel.followsCount)
+        
+        self.followedByCount = Int(userModel.followedByCount)
     }
 }
 

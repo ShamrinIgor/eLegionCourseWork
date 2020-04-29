@@ -20,17 +20,16 @@ func logIn(login: String, password: String, completionHandler: @escaping (Result
     request.allHTTPHeaderFields = ["Content-Type" : "application/json"]
     request.httpMethod = "POST"
     request.httpBody = accountJsonData
-
+    
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
         guard let data = data else {
-            print("krinjer2")
+            completionHandler(.badResponse(0))
             print(String(describing: error))
             return
-            }
-        print(String(data: data, encoding: .utf8)!, "krinjer18+")
+        }
+        print(String(data: data, encoding: .utf8)!)
         
         if let error = error {
-            print("krinjer ")
             print(error.localizedDescription)
             return
         }
@@ -69,8 +68,8 @@ func getPostsForFeed(token: String, completionHandler: @escaping (Result<Posts>)
     var request = URLRequest(url: url!)
     request.addValue(token, forHTTPHeaderField: "token")
     request.httpMethod = "GET"
-
-
+    
+    
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
         guard error == nil else {
             completionHandler(.fail(error!))
@@ -84,18 +83,18 @@ func getPostsForFeed(token: String, completionHandler: @escaping (Result<Posts>)
         }
         print(String(data: responceData, encoding: .utf8)!)
         
-            do {
-                if let json = try JSONSerialization.jsonObject(with: responceData, options: []) as? [Dictionary<String, Any>],
-                    let posts = Posts(json: json) {
-                        completionHandler(.success(posts))
-                    } else {
-                        let error = BackendError.objectSerialization(reason: "Can't create object from JSON")
-                        completionHandler(.fail(error)!)
-                    }
-                } catch {
-                    completionHandler(.fail(error)!)
-                    return
-                }
+        do {
+            if let json = try JSONSerialization.jsonObject(with: responceData, options: []) as? [Dictionary<String, Any>],
+                let posts = Posts(json: json) {
+                completionHandler(.success(posts))
+            } else {
+                let error = BackendError.objectSerialization(reason: "Can't create object from JSON")
+                completionHandler(.fail(error)!)
+            }
+        } catch {
+            completionHandler(.fail(error)!)
+            return
+        }
     }
     task.resume()
 }
@@ -119,19 +118,19 @@ func getUser(withId id: Int, token: String , completionHandler: @escaping (Resul
         }
         print(String(data: responceData, encoding: .utf8)!)
         
-            do {
-                if let json = try JSONSerialization.jsonObject(with: responceData, options: []) as? Dictionary<String, Any>,
-                    let user = User(jsonItem: json) {
-                       print("Создает юзера",user)
-                        completionHandler(.success(user))
-                    } else {
-                        let error = BackendError.objectSerialization(reason: "Can't create object from JSON")
-                        completionHandler(.fail(error)!)
-                    }
-                } catch {
-                    completionHandler(.fail(error)!)
-                    return
-                }
+        do {
+            if let json = try JSONSerialization.jsonObject(with: responceData, options: []) as? Dictionary<String, Any>,
+                let user = User(jsonItem: json) {
+                print("Создает юзера",user)
+                completionHandler(.success(user))
+            } else {
+                let error = BackendError.objectSerialization(reason: "Can't create object from JSON")
+                completionHandler(.fail(error)!)
+            }
+        } catch {
+            completionHandler(.fail(error)!)
+            return
+        }
     }
     task.resume()
 }
@@ -155,19 +154,19 @@ func getUserMe(token: String, completionHandler: @escaping (Result<User>) ->Void
         }
         print(String(data: responceData, encoding: .utf8)!)
         
-            do {
-                if let json = try JSONSerialization.jsonObject(with: responceData, options: []) as? Dictionary<String, Any>,
-                    let user = User(jsonItem: json) {
-                       print("Создает юзера",user)
-                        completionHandler(.success(user))
-                    } else {
-                        let error = BackendError.objectSerialization(reason: "Can't create object from JSON")
-                        completionHandler(.fail(error)!)
-                    }
-                } catch {
-                    completionHandler(.fail(error)!)
-                    return
-                }
+        do {
+            if let json = try JSONSerialization.jsonObject(with: responceData, options: []) as? Dictionary<String, Any>,
+                let user = User(jsonItem: json) {
+                print("Создает юзера",user)
+                completionHandler(.success(user))
+            } else {
+                let error = BackendError.objectSerialization(reason: "Can't create object from JSON")
+                completionHandler(.fail(error)!)
+            }
+        } catch {
+            completionHandler(.fail(error)!)
+            return
+        }
     }
     task.resume()
 }
@@ -177,7 +176,7 @@ func getPosts(ofUserWithId id: Int, token: String, completionHandler: @escaping 
     var request = URLRequest(url: url!)
     request.addValue(token, forHTTPHeaderField: "token")
     request.httpMethod = "GET"
-
+    
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
         guard error == nil else {
             completionHandler(.fail(error!))
@@ -218,17 +217,17 @@ func getUserLikedPost(withId id: Int, token: String, completionHandler: @escapin
             completionHandler(.fail(error!))
             return
         }
-               
+        
         guard let responceData = data else {
             let error = BackendError.objectSerialization(reason: "No data in responce")
             completionHandler(.fail(error)!)
             return
         }
         print(String(data: responceData, encoding: .utf8)!)
-               
+        
         do {
-        if let json = try JSONSerialization.jsonObject(with: responceData, options: []) as? [Dictionary<String, Any>],
-            let users = Users(json: json) {
+            if let json = try JSONSerialization.jsonObject(with: responceData, options: []) as? [Dictionary<String, Any>],
+                let users = Users(json: json) {
                 completionHandler(.success(users))
             } else {
                 let error = BackendError.objectSerialization(reason: "Can't create object from JSON")
@@ -240,7 +239,7 @@ func getUserLikedPost(withId id: Int, token: String, completionHandler: @escapin
         }
     }
     task.resume()
-
+    
 }
 
 struct postID: Codable {
@@ -261,14 +260,14 @@ func likePost(withID id: Int, token: String, completionHandler: @escaping (Resul
     request.httpMethod = "POST"
     request.httpBody = jsonData
     request.addValue(token, forHTTPHeaderField: "token")
-
+    
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
         guard let data = data else {
             print("krinjer2")
             print(String(describing: error))
             return
-            }
-        print(String(data: data, encoding: .utf8)!, "krinjer18+")
+        }
+        print(String(data: data, encoding: .utf8)!)
         
         if let error = error {
             print("krinjer ")
@@ -282,8 +281,8 @@ func likePost(withID id: Int, token: String, completionHandler: @escaping (Resul
         
         do {
             if let json = try JSONSerialization.jsonObject(with: data, options: []) as? Dictionary<String, Any>,
-            let post = Posts.Post(jsonItem: json) {
-                    completionHandler(.success(post))
+                let post = Posts.Post(jsonItem: json) {
+                completionHandler(.success(post))
             } else {
                 let error = BackendError.objectSerialization(reason: "Can't create object from JSON")
                 completionHandler(.fail(error)!)
@@ -309,17 +308,15 @@ func unlikePost(withID id: Int, token: String, completionHandler: @escaping (Res
     request.httpMethod = "POST"
     request.httpBody = jsonData
     request.addValue(token, forHTTPHeaderField: "token")
-
+    
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
         guard let data = data else {
-            print("krinjer2")
             print(String(describing: error))
             return
-            }
-        print(String(data: data, encoding: .utf8)!, "krinjer18+")
+        }
+        print(String(data: data, encoding: .utf8)!)
         
         if let error = error {
-            print("krinjer ")
             print(error.localizedDescription)
             return
         }
@@ -330,8 +327,8 @@ func unlikePost(withID id: Int, token: String, completionHandler: @escaping (Res
         
         do {
             if let json = try JSONSerialization.jsonObject(with: data, options: []) as? Dictionary<String, Any>,
-            let post = Posts.Post(jsonItem: json) {
-                    completionHandler(.success(post))
+                let post = Posts.Post(jsonItem: json) {
+                completionHandler(.success(post))
             } else {
                 let error = BackendError.objectSerialization(reason: "Can't create object from JSON")
                 completionHandler(.fail(error)!)
@@ -367,17 +364,15 @@ func followUser(withID id: Int, token: String, completionHandler: @escaping (Res
     request.httpMethod = "POST"
     request.httpBody = jsonData
     request.addValue(token, forHTTPHeaderField: "token")
-
+    
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
         guard let data = data else {
-            print("krinjer2")
             print(String(describing: error))
             return
-            }
-        print(String(data: data, encoding: .utf8)!, "krinjer18+")
+        }
+        print(String(data: data, encoding: .utf8)!)
         
         if let error = error {
-            print("krinjer ")
             print(error.localizedDescription)
             return
         }
@@ -392,8 +387,8 @@ func followUser(withID id: Int, token: String, completionHandler: @escaping (Res
         
         do {
             if let json = try JSONSerialization.jsonObject(with: data, options: []) as? Dictionary<String, Any>,
-            let user = User(jsonItem: json) {
-                    completionHandler(.success(user))
+                let user = User(jsonItem: json) {
+                completionHandler(.success(user))
             } else {
                 let error = BackendError.objectSerialization(reason: "Can't create object from JSON")
                 completionHandler(.fail(error)!)
@@ -419,17 +414,15 @@ func unfollowUser(withID id: Int, token: String, completionHandler: @escaping (R
     request.httpMethod = "POST"
     request.httpBody = jsonData
     request.addValue(token, forHTTPHeaderField: "token")
-
+    
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
         guard let data = data else {
-            print("krinjer2")
             print(String(describing: error))
             return
-            }
-        print(String(data: data, encoding: .utf8)!, "krinjer18+")
+        }
+        print(String(data: data, encoding: .utf8)!)
         
         if let error = error {
-            print("krinjer ")
             print(error.localizedDescription)
             return
         }
@@ -444,8 +437,8 @@ func unfollowUser(withID id: Int, token: String, completionHandler: @escaping (R
         
         do {
             if let json = try JSONSerialization.jsonObject(with: data, options: []) as? Dictionary<String, Any>,
-            let user = User(jsonItem: json) {
-                    completionHandler(.success(user))
+                let user = User(jsonItem: json) {
+                completionHandler(.success(user))
             } else {
                 let error = BackendError.objectSerialization(reason: "Can't create object from JSON")
                 completionHandler(.fail(error)!)
@@ -462,7 +455,7 @@ func unfollowUser(withID id: Int, token: String, completionHandler: @escaping (R
 
 func createPost(token: String, image: UIImage, description: String, completionHandler: @escaping (Result<Posts.Post>) ->Void) {
     let url = URL(string: "http://localhost:8080/posts/create")
-   
+    
     
     let imageData = image.pngData()!.base64EncodedString()
     
@@ -484,17 +477,15 @@ func createPost(token: String, image: UIImage, description: String, completionHa
     request.allHTTPHeaderFields = defaultHeaders
     request.httpMethod = "POST"
     request.httpBody = idData
-
+    
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
         guard let data = data else {
-            print("krinjer2")
             print(String(describing: error))
             return
-            }
-        print(String(data: data, encoding: .utf8)!, "krinjer18+")
+        }
+        print(String(data: data, encoding: .utf8)!)
         
         if let error = error {
-            print("krinjer ")
             print(error.localizedDescription)
             return
         }
@@ -506,8 +497,8 @@ func createPost(token: String, image: UIImage, description: String, completionHa
         
         do {
             if let json = try JSONSerialization.jsonObject(with: data, options: []) as? Dictionary<String, Any>,
-            let post = Posts.Post(jsonItem: json) {
-                    completionHandler(.success(post))
+                let post = Posts.Post(jsonItem: json) {
+                completionHandler(.success(post))
             } else {
                 let error = BackendError.objectSerialization(reason: "Can't create object from JSON")
                 completionHandler(.fail(error)!)

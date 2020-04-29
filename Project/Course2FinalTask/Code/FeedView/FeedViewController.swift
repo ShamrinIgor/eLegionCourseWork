@@ -6,24 +6,50 @@
 //  Copyright © 2019 e-Legion. All rights reserved.
 //
 import UIKit
+import CoreData
 
 var posts: Posts?
 
 class FeedTableViewController:  UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet weak var loadingSpinner: UIActivityIndicatorView!
-    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var navigationBar: UINavigationItem!
     
+    var selectedIndex = 0
+    
     let spinner = UIActivityIndicatorView()
+    
     var refreshControll: UIRefreshControl = {
         let rfControll = UIRefreshControl()
         rfControll.addTarget(self, action: #selector(refresh(sender:)),for: .valueChanged)
         return rfControll
     }()
     
-    var selectedIndex = 0
+    var savedPostsMap = [Int:Bool]()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView.register(FeedViewCell.self, forCellReuseIdentifier: "kekCellid")
+        
+        tableView.separatorStyle = .none
+        tableView.refreshControl = refreshControll
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        if !isOfflineMode {
+            dataManager.deleteAllEntities(entityName: "PostModel")
+            getPostsInTableViewController()
+        } else {
+            posts = Posts()
+        }
+        viewConfiger()
+        
+        if isOfflineMode {
+            fetchData(predicate: nil)
+        }
+    }
     
     @objc private func refresh(sender: UIRefreshControl) {
         getPostsInTableViewController()
@@ -40,6 +66,26 @@ class FeedTableViewController:  UIViewController, UITableViewDataSource, UITable
                 switch result {
                 case .success(let arrayOfPosts):
                     posts = arrayOfPosts
+                    
+                    let context = dataManager.getConetxt()
+                    for post in arrayOfPosts.posts {
+                        if self.savedPostsMap[post.id!] == nil {
+                            self.savedPostsMap[post.id!] = true
+                            
+                            let postForCoreData = dataManager.createObject(from: PostModel.self)
+                            postForCoreData.authorAvatar = post.authorAvatar?.absoluteString
+                            postForCoreData.authorId = Int64(post.authorId!)
+                            postForCoreData.authorUsername = post.authorUsername
+                            postForCoreData.createdTime = post.createdTime!
+                            postForCoreData.currentUserLikesThisPost = post.currentUserLikesThisPost ?? false
+                            postForCoreData.descriptionOfPost = post.description
+                            postForCoreData.image = post.image?.absoluteString
+                            postForCoreData.id = Int64(post.id!)
+                            postForCoreData.likedByCount = Int64(post.likedByCount!)
+                            
+                            dataManager.save(context: context)
+                        }
+                    }
                 case .fail(let error):
                     print(error)
                 case .badResponse(let res):
@@ -51,20 +97,13 @@ class FeedTableViewController:  UIViewController, UITableViewDataSource, UITable
         group.wait()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        tableView.register(FeedViewCell.self, forCellReuseIdentifier: "kekCellid")
-        
-        tableView.separatorStyle = .none
-        tableView.refreshControl = refreshControll
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        
-        
-        getPostsInTableViewController()
-        
+    func fetchData(predicate: NSCompoundPredicate?) {
+        let fetchedPosts = dataManager.fetchData(for: PostModel.self)
+        posts = Posts(coreDataPosts: fetchedPosts)
+    }
+    
+
+    func viewConfiger() {
         view.bringSubviewToFront(loadingSpinner)
         loadingSpinner.style = .whiteLarge
         loadingSpinner.backgroundColor = (UIColor (white: 0.3, alpha: 0.8))
@@ -173,7 +212,4 @@ class FeedTableViewController:  UIViewController, UITableViewDataSource, UITable
             
         }
     }
-    
-    
-    
 }

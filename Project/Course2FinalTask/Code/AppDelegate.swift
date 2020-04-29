@@ -13,6 +13,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+//        
+//        let dataManager = CoreDataManager(modelName: "TeamManager")
+//        
+//        self.window = UIWindow(frame: UIScreen.main.bounds)
+//        let navigator = UINavigationController()
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        let mainVC = storyboard.instantiateViewController(withIdentifier: "LoginScreenViewController") as! LoginScreenViewController
+//        mainVC.dataManager = dataManager
+//        navigator.viewControllers = [mainVC]
+//        
+//        self.window?.rootViewController = navigator
+//        self.window?.makeKeyAndVisible()
   
         return true
     }

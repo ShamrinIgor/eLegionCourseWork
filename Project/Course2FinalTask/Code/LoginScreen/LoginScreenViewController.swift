@@ -1,6 +1,8 @@
 import UIKit
 
 public var token = String()
+public var isOfflineMode = false
+var dataManager = CoreDataManager(modelName: "PostsDataModel")
 
 class LoginScreenViewController: UIViewController, UITextFieldDelegate
 {
@@ -10,6 +12,8 @@ class LoginScreenViewController: UIViewController, UITextFieldDelegate
     
     var loginTextFieldIsEmpty = true
     var passwordTextFieldIsEmpty = true
+    
+    var dataManager: CoreDataManager!
     
     var service = "eLegionCourseProject"
             
@@ -109,6 +113,13 @@ class LoginScreenViewController: UIViewController, UITextFieldDelegate
         return true
     }
     
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if (segue.identifier == "toNavigationBar") {
+//            let vc = segue.destination as! FeedTableViewController
+//            vc.dataManager = self.dataManager
+//        }
+//    }
+    
     func logInIntoAccount(account: String?, password: String?) {
         if let login = account, let password = password {
             if !login.isEmpty && !password.isEmpty {
@@ -141,9 +152,19 @@ class LoginScreenViewController: UIViewController, UITextFieldDelegate
                             }
                         }
                     case .fail(let error):
+                        print(".fail case")
                         print(error)
                     case .badResponse(let res):
+                        print(".badResponse case")
                         print(res)
+                        isOfflineMode = true
+                        DispatchQueue.main.async {
+                            AlertForOfflineMode.showBasic(title: "Connection error", message: "The server is not responding", vc: self) {_ in
+                                print("Offline button pressed")
+                                self.performSegue(withIdentifier: "toNavigationBar", sender: nil)
+                            }
+                        }
+                        
                     }
                     group.leave()
                 }
@@ -152,8 +173,26 @@ class LoginScreenViewController: UIViewController, UITextFieldDelegate
         }
     }
     
+//    func GoOfflineButtonPressed() {
+//        let tabBarCotroller = UITabBarController()
+//
+//        let feedVC = FeedViewControllerOffline()
+//        let collectionVC = UIViewController()
+//
+//        collectionVC.title = "Collection view"
+//
+//
+//        feedVC.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 0)
+//        collectionVC.tabBarItem = UITabBarItem(tabBarSystemItem: .history, tag: 1)
+//
+//        let controllers = [feedVC, collectionVC]
+//        tabBarCotroller.viewControllers = controllers
+//        tabBarCotroller.viewControllers = controllers.map { UINavigationController(rootViewController: $0)}
+//
+//        present(tabBarCotroller, animated: true, completion: nil)
+//    }
+    
     @objc func signInButtonPressed(sender: UIButton!) {
-//        if let login = loginTextField.text, let password = passwordTextField.text {
         logInIntoAccount(account: loginTextField.text, password: passwordTextField.text)
     }
     

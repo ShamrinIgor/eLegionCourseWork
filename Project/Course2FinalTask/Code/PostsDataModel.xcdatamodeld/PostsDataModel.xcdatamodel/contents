@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19E266" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CurrentUserPosts" representedClassName="CurrentUserPosts" syncable="YES" codeGenerationType="class"/>
+    <entity name="PostModel" representedClassName="PostModel" syncable="YES" codeGenerationType="class">
+        <attribute name="authorAvatar" optional="YES" attributeType="String"/>
+        <attribute name="authorId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="authorUsername" optional="YES" attributeType="String"/>
+        <attribute name="createdTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="currentUserLikesThisPost" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="descriptionOfPost" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="image" optional="YES" attributeType="String"/>
+        <attribute name="likedByCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="UserModel" representedClassName="UserModel" syncable="YES" codeGenerationType="class">
+        <attribute name="avatarURL" optional="YES" attributeType="String"/>
+        <attribute name="currentUserFollowsThisUser" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="currentUserIsFollowedByThisUser" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="followedByCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="followsCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="fullName" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="username" optional="YES" attributeType="String"/>
+    </entity>
+    <elements>
+        <element name="PostModel" positionX="-54" positionY="45" width="128" height="178"/>
+        <element name="UserModel" positionX="-63" positionY="-18" width="128" height="163"/>
+        <element name="CurrentUserPosts" positionX="-54" positionY="81" width="128" height="43"/>
+    </elements>
+</model>
