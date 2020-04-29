@@ -113,13 +113,6 @@ class LoginScreenViewController: UIViewController, UITextFieldDelegate
         return true
     }
     
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if (segue.identifier == "toNavigationBar") {
-//            let vc = segue.destination as! FeedTableViewController
-//            vc.dataManager = self.dataManager
-//        }
-//    }
-    
     func logInIntoAccount(account: String?, password: String?) {
         if let login = account, let password = password {
             if !login.isEmpty && !password.isEmpty {
@@ -172,25 +165,6 @@ class LoginScreenViewController: UIViewController, UITextFieldDelegate
             }
         }
     }
-    
-//    func GoOfflineButtonPressed() {
-//        let tabBarCotroller = UITabBarController()
-//
-//        let feedVC = FeedViewControllerOffline()
-//        let collectionVC = UIViewController()
-//
-//        collectionVC.title = "Collection view"
-//
-//
-//        feedVC.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 0)
-//        collectionVC.tabBarItem = UITabBarItem(tabBarSystemItem: .history, tag: 1)
-//
-//        let controllers = [feedVC, collectionVC]
-//        tabBarCotroller.viewControllers = controllers
-//        tabBarCotroller.viewControllers = controllers.map { UINavigationController(rootViewController: $0)}
-//
-//        present(tabBarCotroller, animated: true, completion: nil)
-//    }
     
     @objc func signInButtonPressed(sender: UIButton!) {
         logInIntoAccount(account: loginTextField.text, password: passwordTextField.text)

@@ -96,23 +96,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
                 case .success(let posts):
                     self.currentUserPosts = posts
                     self.currentUserPosts.posts = self.currentUserPosts.posts.reversed()
-                    
-//                    let context = dataManager.getConetxt()
-//                    for post in self.currentUserPosts.posts {
-//                        let postForCoreData = dataManager.createObject(from: PostModel.self)
-//                        postForCoreData.authorAvatar = post.authorAvatar?.absoluteString
-//                        postForCoreData.authorId = Int64(post.authorId!)
-//                        postForCoreData.authorUsername = post.authorUsername
-//                        postForCoreData.createdTime = post.createdTime!
-//                        postForCoreData.currentUserLikesThisPost = post.currentUserLikesThisPost ?? false
-//                        postForCoreData.descriptionOfPost = post.description
-//                        postForCoreData.image = post.image?.absoluteString
-//                        postForCoreData.id = Int64(post.id!)
-//                        postForCoreData.likedByCount = Int64(post.likedByCount!)
-//
-//                        dataManager.save(context: context)
-//                    }
-
+                
                 case .fail(let error):
                     print(error)
                 case .badResponse(let res):
