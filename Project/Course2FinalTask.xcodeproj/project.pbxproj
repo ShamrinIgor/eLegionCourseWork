@@ -15,6 +15,7 @@
 		7813F52123D582C7005E6091 /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7813F52023D582C7005E6091 /* Requests.swift */; };
 		7828D18323CCFBA30072C2C3 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828D18223CCFBA30072C2C3 /* Account.swift */; };
 		7828D18723D03AF70072C2C3 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828D18623D03AF70072C2C3 /* Post.swift */; };
+		7833A1B7245A132C0082F9AE /* LoginScreenWavesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7833A1B6245A132C0082F9AE /* LoginScreenWavesController.swift */; };
 		78481022232E2FF0002DBA52 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78481021232E2FF0002DBA52 /* Launch Screen.storyboard */; };
 		78481024232E321D002DBA52 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78481023232E321D002DBA52 /* Main.storyboard */; };
 		78481026232E32B2002DBA52 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78481025232E32B2002DBA52 /* FeedViewController.swift */; };
@@ -53,6 +54,7 @@
 		7828D18223CCFBA30072C2C3 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		7828D18623D03AF70072C2C3 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		7828D18923D067E20072C2C3 /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/iOS/Kingfisher.framework; sourceTree = "<group>"; };
+		7833A1B6245A132C0082F9AE /* LoginScreenWavesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreenWavesController.swift; sourceTree = "<group>"; };
 		78481021232E2FF0002DBA52 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		78481023232E321D002DBA52 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		78481025232E32B2002DBA52 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
@@ -211,6 +213,7 @@
 			children = (
 				7813F51A23CCB89A005E6091 /* LoginScreenViewController.swift */,
 				788F72DF24505448006FE115 /* Authentication.swift */,
+				7833A1B6245A132C0082F9AE /* LoginScreenWavesController.swift */,
 			);
 			path = LoginScreen;
 			sourceTree = "<group>";
@@ -352,6 +355,7 @@
 				78FDBAA1233CC5470028BFBF /* likeTableViewCell.swift in Sources */,
 				7828D18723D03AF70072C2C3 /* Post.swift in Sources */,
 				7870E473237AE5C900E64F7F /* NewpostViewController.swift in Sources */,
+				7833A1B7245A132C0082F9AE /* LoginScreenWavesController.swift in Sources */,
 				785D36672454848E00840581 /* CoreDataManager.swift in Sources */,
 				7828D18323CCFBA30072C2C3 /* Account.swift in Sources */,
 				74B79258202B3254006BCB41 /* AppDelegate.swift in Sources */,
